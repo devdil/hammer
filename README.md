@@ -9,12 +9,7 @@
 █▀█ █▀█ █░▀░█ █░▀░█ ██▄ █▀▄
 ```
 ## Hammer
-<<<<<<< Updated upstream
 A simple load testing tool built in go
-=======
-### A simple load testing tool built in go
->>>>>>> Stashed changes
-
 ## Usage
 For help
 ```shell
@@ -65,13 +60,4 @@ P90(ms) :  259
 Max(ms) :  418
 Min(ms) :  100
 ---------------------------------
-<<<<<<< Updated upstream
 ```
-=======
-```
-
-
-
-
-
->>>>>>> Stashed changes
