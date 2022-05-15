@@ -9,7 +9,7 @@
 █▀█ █▀█ █░▀░█ █░▀░█ ██▄ █▀▄
 ```
 ## Hammer
-### A simple load testing tool built in go
+A simple load testing tool built in go
 
 ## Usage
 For help
