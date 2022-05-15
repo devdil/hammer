@@ -14,7 +14,7 @@ func TestParseHeadersToMapShouldPassWithRightParams(t *testing.T) {
 
 }
 
-func TestParseHeadersToMapShouldFailWithIncorectJson(t *testing.T) {
+func TestParseHeadersToMapShouldFailWithIncorrectJson(t *testing.T) {
 	testHeaders := `{"Content-Type" : }`
 	_, err := ParseHeadersToMap(testHeaders)
 

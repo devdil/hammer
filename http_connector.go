@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io"
 	"log"
 	"net/http"
 	"sync"
@@ -10,15 +9,12 @@ import (
 
 type httpRequest struct {
 	isSecure    bool
-	url         string
-	headers     string
+	headers     map[string]string
 	requestType string
 	reqCtxt     requestContext
-}
-
-type requestContext struct {
-	result chan httpResponse
-	wg     *sync.WaitGroup
+	wg          sync.WaitGroup
+	responses   chan httpResponse
+	httpClient  *http.Client
 }
 
 type httpResponse struct {
@@ -26,21 +22,28 @@ type httpResponse struct {
 	timeTook   int
 }
 
-func (h httpRequest) Get() {
+func (h *httpRequest) IncrementRequestCount() {
+	h.wg.Add(1)
+}
+
+func (h *httpRequest) Get() {
 	// notify when its done, via waitgroup
-	defer h.reqCtxt.wg.Done()
 	startTime := time.Now().UnixMilli()
-	resp, err := http.Get(h.url)
+	req, err := http.NewRequest("GET", h.reqCtxt.commandLineParams.url, nil)
+	//for headerName, headerVal := range h.headers {
+	//	req.Header.Add(headerName, headerVal)
+	//}
+	resp, err := h.httpClient.Do(req)
 	if err != nil {
 		log.Fatal("Something went wrong while fetching ", err)
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			log.Fatal("Something went wrong while closing the get request ", err)
-		}
-	}(resp.Body)
+	defer resp.Body.Close()
 	timeItTook := time.Now().UnixMilli() - startTime
 	res := httpResponse{statusCode: resp.StatusCode, timeTook: int(timeItTook)}
-	h.reqCtxt.result <- res
+	h.responses <- res
+	h.wg.Done()
+}
+
+func (h *httpRequest) WaitForAllToComplete() {
+
 }
